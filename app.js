@@ -2,7 +2,7 @@ const express = require('express')
 // import { demo } from './Utils/babel_Utils.js';
 
 const app = express();
-const { autoComment } = require('../Auto_commenter/Utils/babel_Utils');  // Import the function
+const { autoComment } = require('./babel_Utils.js');  // Import the function
 
 const code = `
   function API_call(req , res) {

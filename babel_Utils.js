@@ -2,7 +2,7 @@
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 
-function generateComment(functionName,description) {
+function generateComment(functionName, description) {
     return `/**
     * ${functionName}
     * description - ${description}
@@ -17,9 +17,9 @@ function autoComment(code) {
             console.log(path.node.id.name, 'path here---')
             const funcName = path.node.id.name;
             let node = path.node;
-            const description = generateFunctionDescription(path?.node?.body,path.node.params);
+            const description = generateFunctionDescription(path?.node?.body, path.node.params);
             // const params = path.node.params.map(param => param.name);
-            const comment = generateComment(funcName,description);
+            const comment = generateComment(funcName, description);
             path.addComment('leading', comment);
         },
     });
@@ -106,7 +106,7 @@ function autoComment(code) {
 //     return description;
 // };
 
-const generateFunctionDescription = (body, params) => {
+const generateFunctionDescription = async (body, params) => {
     let description = "";
     const paramNames = params.map(param => param.name);
 
@@ -188,9 +188,9 @@ const generateFunctionDescription = (body, params) => {
             description += ` It uses the parameters: ${paramNames.join(", ")}.`;
         }
     }
-
     return description;
 };
+
 
 const traversePromiseChain = (node) => {
     let current = node;
@@ -207,12 +207,12 @@ const traversePromiseChain = (node) => {
 
             // Traverse to the previous part of the chain
             current = callee.object;
-        } 
+        }
         // If the callee is an Identifier (e.g., axios)
         else if (callee.type === "Identifier") {
             chain.push(callee.name); // Push the function name (e.g., "axios")
             break; // Break after processing the function call
-        } 
+        }
         // If the callee is another CallExpression, continue traversing
         else if (callee.type === "CallExpression") {
             current = callee; // Move to the next CallExpression
